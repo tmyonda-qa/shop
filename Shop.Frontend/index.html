@@ -41,6 +41,7 @@
         <h1>🛍️ Shop</h1>
         <nav>
             <a onclick="showPage('catalog')">Каталог</a>
+            <a id="admin-link" style="display:none" onclick="showPage('admin')">Адмін</a>
             <a onclick="showPage('cart')">🛒 Кошик</a>
             <a onclick="showPage('orders')">Замовлення</a>
             <span id="auth-nav">
@@ -56,7 +57,29 @@
 
     <main>
         <div id="message"></div>
+        <!-- Адмін панель -->
+        <div id="admin" class="page">
+            <h2 style="margin-bottom:1rem">Управління товарами</h2>
+            <button class="btn btn-primary" style="margin-bottom:1rem" onclick="showAdminForm()">+ Додати товар</button>
 
+            <div id="admin-form" style="display:none;margin-bottom:2rem">
+                <div style="background:white;padding:1.5rem;border-radius:8px;max-width:500px">
+                    <h3 id="admin-form-title" style="margin-bottom:1rem">Новий товар</h3>
+                    <input type="hidden" id="admin-product-id">
+                    <input type="text" id="admin-name" placeholder="Назва" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
+                    <input type="text" id="admin-description" placeholder="Опис" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
+                    <input type="number" id="admin-price" placeholder="Ціна" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
+                    <input type="text" id="admin-category" placeholder="Категорія" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
+                    <input type="text" id="admin-image" placeholder="URL фото" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
+                    <input type="number" id="admin-stock" placeholder="Залишок" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
+                    <div style="display:flex;gap:0.5rem">
+                        <button class="btn btn-primary" onclick="saveProduct()">Зберегти</button>
+                        <button class="btn" style="background:#95a5a6;color:white" onclick="document.getElementById('admin-form').style.display='none'">Скасувати</button>
+                    </div>
+                </div>
+            </div>
+            <div id="admin-products-list"></div>
+        </div>
         <!-- Каталог -->
         <div id="catalog" class="page active">
             <div class="search-bar">
@@ -122,6 +145,7 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(name).classList.add('active');
             if (name === 'catalog') loadProducts();
+            if (name === 'admin') loadAdminProducts();
             if (name === 'cart') loadCart();
             if (name === 'orders') loadOrders();
         }
@@ -131,6 +155,8 @@
             document.getElementById('auth-nav').style.display = user ? 'none' : 'inline';
             document.getElementById('user-nav').style.display = user ? 'inline' : 'none';
             if (user) document.getElementById('user-email').textContent = user.email;
+            const adminLink = document.getElementById('admin-link');
+            if (adminLink) adminLink.style.display = user?.role === 'Admin' ? 'inline' : 'none';
         }
 
         async function loadProducts() {
@@ -258,7 +284,88 @@
                 showMessage('Реєстрація успішна!');
             } else showMessage('Помилка реєстрації', 'error');
         }
+        async function loadAdminProducts() {
+            const res = await fetch(`${API}/Products`);
+            const products = await res.json();
+            document.getElementById('admin-products-list').innerHTML = products.map(p => `
+        <div style="background:white;padding:1rem;border-radius:8px;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center">
+            <div>
+                <strong>${p.name}</strong> — ${p.price} грн — залишок: ${p.stock}
+            </div>
+            <div style="display:flex;gap:0.5rem">
+                <button class="btn btn-primary" onclick="editProduct(${p.id},'${p.name}','${p.description}',${p.price},'${p.category}','${p.imageUrl}',${p.stock})">Редагувати</button>
+                <button class="btn btn-danger" onclick="deleteProduct(${p.id})">Видалити</button>
+            </div>
+        </div>
+    `).join('');
+        }
 
+        function showAdminForm() {
+            document.getElementById('admin-product-id').value = '';
+            document.getElementById('admin-name').value = '';
+            document.getElementById('admin-description').value = '';
+            document.getElementById('admin-price').value = '';
+            document.getElementById('admin-category').value = '';
+            document.getElementById('admin-image').value = '';
+            document.getElementById('admin-stock').value = '';
+            document.getElementById('admin-form-title').textContent = 'Новий товар';
+            document.getElementById('admin-form').style.display = 'block';
+        }
+
+        function editProduct(id, name, description, price, category, imageUrl, stock) {
+            document.getElementById('admin-product-id').value = id;
+            document.getElementById('admin-name').value = name;
+            document.getElementById('admin-description').value = description;
+            document.getElementById('admin-price').value = price;
+            document.getElementById('admin-category').value = category;
+            document.getElementById('admin-image').value = imageUrl;
+            document.getElementById('admin-stock').value = stock;
+            document.getElementById('admin-form-title').textContent = 'Редагувати товар';
+            document.getElementById('admin-form').style.display = 'block';
+        }
+
+        async function saveProduct() {
+            const id = document.getElementById('admin-product-id').value;
+            const dto = {
+                name: document.getElementById('admin-name').value,
+                description: document.getElementById('admin-description').value,
+                price: parseFloat(document.getElementById('admin-price').value),
+                category: document.getElementById('admin-category').value,
+                imageUrl: document.getElementById('admin-image').value,
+                stock: parseInt(document.getElementById('admin-stock').value)
+            };
+
+            const url = id ? `${API}/Products/${id}` : `${API}/Products`;
+            const method = id ? 'PUT' : 'POST';
+            if (method === 'PUT') dto.id = parseInt(id);
+
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+                body: JSON.stringify(dto)
+            });
+
+            if (res.ok) {
+                showMessage(id ? 'Товар оновлено!' : 'Товар додано!');
+                document.getElementById('admin-form').style.display = 'none';
+                loadAdminProducts();
+            } else {
+                const err = await res.text();
+                showMessage(err, 'error');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Видалити товар?')) return;
+            const res = await fetch(`${API}/Products/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            if (res.ok) {
+                showMessage('Товар видалено!');
+                loadAdminProducts();
+            } else showMessage('Помилка при видаленні', 'error');
+        }
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
