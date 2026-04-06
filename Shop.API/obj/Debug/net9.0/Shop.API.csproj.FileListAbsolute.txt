@@ -141,3 +141,12 @@
 /Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.AspNetCore.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.Extensions.Hosting.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.Extensions.Logging.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.Formatting.Compact.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.Settings.Configuration.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.Sinks.Console.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
+/Users/tarasyonda/RiderProjects/shop/Shop.API/bin/Debug/net9.0/Serilog.Sinks.File.dll

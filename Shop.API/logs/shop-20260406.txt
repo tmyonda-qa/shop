@@ -1,0 +1,12 @@
+2026-04-06 12:30:00.085 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 12:30:00.156 +03:00 [INF] Now listening on: http://localhost:5088
+2026-04-06 12:30:00.157 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-04-06 12:30:00.157 +03:00 [INF] Hosting environment: Development
+2026-04-06 12:30:00.157 +03:00 [INF] Content root path: /Users/tarasyonda/RiderProjects/shop/Shop.API
+2026-04-06 12:30:34.027 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/swagger/index.html - null null
+2026-04-06 12:30:34.081 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/swagger/index.html - 200 null text/html;charset=utf-8 55.7913ms
+2026-04-06 12:30:34.093 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/swagger/index.js - null null
+2026-04-06 12:30:34.094 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/swagger/index.js - 200 null application/javascript;charset=utf-8 2.3307ms
+2026-04-06 12:30:34.152 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/swagger/v1/swagger.json - null null
+2026-04-06 12:30:34.205 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 52.849ms
+2026-04-06 12:31:07.542 +03:00 [INF] Application is shutting down...
