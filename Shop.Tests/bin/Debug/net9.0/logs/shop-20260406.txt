@@ -1,0 +1,228 @@
+2026-04-06 15:41:33.729 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 15:41:33.782 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost/api/Products - null null
+2026-04-06 15:41:33.800 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-06 15:41:33.816 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:41:33.823 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.ProductDto]]] GetProducts(System.String, System.String) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-06 15:41:33.860 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 35.2079ms
+2026-04-06 15:41:33.866 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:41:33.867 +03:00 [ERR] Unhandled exception occurred
+System.InvalidOperationException: Services for database providers 'Npgsql.EntityFrameworkCore.PostgreSQL', 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider.
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.CheckState()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Select[TSource,TResult](IQueryable`1 source, Expression`1 selector)
+   at Shop.API.Controllers.ProductsController.GetProducts(String category, String search) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Controllers/ProductsController.cs:line 34
+   at lambda_method73(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Shop.API.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Middleware/ErrorHandlingMiddleware.cs:line 21
+2026-04-06 15:41:33.885 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost/api/Products - 500 null application/json 103.8312ms
+2026-04-06 15:41:33.974 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 15:41:33.984 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost/api/Products/9999 - null null
+2026-04-06 15:41:33.986 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-06 15:41:33.987 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProduct (Shop.API)'
+2026-04-06 15:41:33.989 +03:00 [INF] Route matched with {action = "GetProduct", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Shop.API.DTOs.ProductDto]] GetProduct(Int32) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-06 15:41:33.992 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProduct (Shop.API) in 2.0703ms
+2026-04-06 15:41:33.992 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProduct (Shop.API)'
+2026-04-06 15:41:33.992 +03:00 [ERR] Unhandled exception occurred
+System.InvalidOperationException: Services for database providers 'Npgsql.EntityFrameworkCore.PostgreSQL', 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider.
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_Finder()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.FindAsync(Object[] keyValues)
+   at Shop.API.Controllers.ProductsController.GetProduct(Int32 id) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Controllers/ProductsController.cs:line 49
+   at lambda_method159(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Shop.API.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Middleware/ErrorHandlingMiddleware.cs:line 21
+2026-04-06 15:41:33.993 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost/api/Products/9999 - 500 null application/json 8.2513ms
+2026-04-06 15:41:34.064 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 15:41:34.074 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost/api/Auth/register - application/json; charset=utf-8 83
+2026-04-06 15:41:34.075 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-06 15:41:34.075 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.AuthController.Register (Shop.API)'
+2026-04-06 15:41:34.077 +03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Shop.API.DTOs.AuthResponseDto]] Register(Shop.API.DTOs.RegisterDto) on controller Shop.API.Controllers.AuthController (Shop.API).
+2026-04-06 15:41:34.085 +03:00 [INF] Executed action Shop.API.Controllers.AuthController.Register (Shop.API) in 8.0651ms
+2026-04-06 15:41:34.085 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.AuthController.Register (Shop.API)'
+2026-04-06 15:41:34.086 +03:00 [ERR] Unhandled exception occurred
+System.InvalidOperationException: Services for database providers 'Npgsql.EntityFrameworkCore.PostgreSQL', 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider.
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.CheckState()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Linq.IQueryable.get_Provider()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteAsync[TSource,TResult](MethodInfo operatorMethodInfo, IQueryable`1 source, Expression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteAsync[TSource,TResult](MethodInfo operatorMethodInfo, IQueryable`1 source, LambdaExpression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AnyAsync[TSource](IQueryable`1 source, Expression`1 predicate, CancellationToken cancellationToken)
+   at Shop.API.Controllers.AuthController.Register(RegisterDto dto) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Controllers/AuthController.cs:line 30
+   at lambda_method183(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Shop.API.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Middleware/ErrorHandlingMiddleware.cs:line 21
+2026-04-06 15:41:34.092 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost/api/Auth/register - 500 null application/json 18.1334ms
+2026-04-06 15:42:35.158 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 15:42:35.210 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost/api/Products - null null
+2026-04-06 15:42:35.229 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-06 15:42:35.241 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:42:35.249 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.ProductDto]]] GetProducts(System.String, System.String) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-06 15:42:35.274 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 24.0134ms
+2026-04-06 15:42:35.280 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:42:35.281 +03:00 [ERR] Unhandled exception occurred
+System.InvalidOperationException: Services for database providers 'Npgsql.EntityFrameworkCore.PostgreSQL', 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider.
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.CheckState()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Select[TSource,TResult](IQueryable`1 source, Expression`1 selector)
+   at Shop.API.Controllers.ProductsController.GetProducts(String category, String search) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Controllers/ProductsController.cs:line 34
+   at lambda_method56(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Shop.API.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Middleware/ErrorHandlingMiddleware.cs:line 21
+2026-04-06 15:42:35.299 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost/api/Products - 500 null application/json 89.7749ms
+2026-04-06 15:42:35.387 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 15:42:35.397 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost/api/Products/9999 - null null
+2026-04-06 15:42:35.399 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-06 15:42:35.400 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProduct (Shop.API)'
+2026-04-06 15:42:35.402 +03:00 [INF] Route matched with {action = "GetProduct", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Shop.API.DTOs.ProductDto]] GetProduct(Int32) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-06 15:42:35.404 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProduct (Shop.API) in 1.7852ms
+2026-04-06 15:42:35.404 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProduct (Shop.API)'
+2026-04-06 15:42:35.404 +03:00 [ERR] Unhandled exception occurred
+System.InvalidOperationException: Services for database providers 'Npgsql.EntityFrameworkCore.PostgreSQL', 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider.
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_Finder()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.FindAsync(Object[] keyValues)
+   at Shop.API.Controllers.ProductsController.GetProduct(Int32 id) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Controllers/ProductsController.cs:line 49
+   at lambda_method159(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Shop.API.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Middleware/ErrorHandlingMiddleware.cs:line 21
+2026-04-06 15:42:35.405 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost/api/Products/9999 - 500 null application/json 7.5021ms
+2026-04-06 15:42:35.473 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 15:42:35.482 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost/api/Auth/register - application/json; charset=utf-8 83
+2026-04-06 15:42:35.484 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-06 15:42:35.484 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.AuthController.Register (Shop.API)'
+2026-04-06 15:42:35.486 +03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Shop.API.DTOs.AuthResponseDto]] Register(Shop.API.DTOs.RegisterDto) on controller Shop.API.Controllers.AuthController (Shop.API).
+2026-04-06 15:42:35.494 +03:00 [INF] Executed action Shop.API.Controllers.AuthController.Register (Shop.API) in 7.8258ms
+2026-04-06 15:42:35.494 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.AuthController.Register (Shop.API)'
+2026-04-06 15:42:35.494 +03:00 [ERR] Unhandled exception occurred
+System.InvalidOperationException: Services for database providers 'Npgsql.EntityFrameworkCore.PostgreSQL', 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider.
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.CheckState()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Linq.IQueryable.get_Provider()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteAsync[TSource,TResult](MethodInfo operatorMethodInfo, IQueryable`1 source, Expression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteAsync[TSource,TResult](MethodInfo operatorMethodInfo, IQueryable`1 source, LambdaExpression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AnyAsync[TSource](IQueryable`1 source, Expression`1 predicate, CancellationToken cancellationToken)
+   at Shop.API.Controllers.AuthController.Register(RegisterDto dto) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Controllers/AuthController.cs:line 30
+   at lambda_method183(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Shop.API.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in /Users/tarasyonda/RiderProjects/shop/Shop.API/Middleware/ErrorHandlingMiddleware.cs:line 21
+2026-04-06 15:42:35.500 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost/api/Auth/register - 500 null application/json 18.3117ms
+2026-04-06 15:43:38.610 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-06 15:43:38.657 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost/api/Products - null null
+2026-04-06 15:43:38.667 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-06 15:43:38.683 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:43:38.691 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.ProductDto]]] GetProducts(System.String, System.String) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-06 15:43:38.785 +03:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.ProductDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-06 15:43:38.803 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 110.9287ms
+2026-04-06 15:43:38.809 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:43:38.818 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost/api/Products - 200 null application/json; charset=utf-8 162.7041ms
+2026-04-06 15:43:38.823 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost/api/Products/9999 - null null
+2026-04-06 15:43:38.824 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProduct (Shop.API)'
+2026-04-06 15:43:38.826 +03:00 [INF] Route matched with {action = "GetProduct", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Shop.API.DTOs.ProductDto]] GetProduct(Int32) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-06 15:43:38.829 +03:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+2026-04-06 15:43:38.836 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProduct (Shop.API) in 9.8838ms
+2026-04-06 15:43:38.836 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProduct (Shop.API)'
+2026-04-06 15:43:38.836 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost/api/Products/9999 - 404 null application/problem+json; charset=utf-8 12.9162ms
+2026-04-06 15:43:38.843 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost/api/Auth/register - application/json; charset=utf-8 83
+2026-04-06 15:43:38.845 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.AuthController.Register (Shop.API)'
+2026-04-06 15:43:38.847 +03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Shop.API.DTOs.AuthResponseDto]] Register(Shop.API.DTOs.RegisterDto) on controller Shop.API.Controllers.AuthController (Shop.API).
+2026-04-06 15:43:39.057 +03:00 [INF] Saved 1 entities to in-memory store.
+2026-04-06 15:43:39.067 +03:00 [INF] Executing OkObjectResult, writing value of type 'Shop.API.DTOs.AuthResponseDto'.
+2026-04-06 15:43:39.069 +03:00 [INF] Executed action Shop.API.Controllers.AuthController.Register (Shop.API) in 221.8555ms
+2026-04-06 15:43:39.069 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.AuthController.Register (Shop.API)'
+2026-04-06 15:43:39.069 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost/api/Auth/register - 200 null application/json; charset=utf-8 225.7368ms
