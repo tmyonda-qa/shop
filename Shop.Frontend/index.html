@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 1.5rem; }
+        nav a { color: white; text-decoration: none; margin-left: 1rem; cursor: pointer; }
+        nav a:hover { text-decoration: underline; }
+        main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+        .product-card { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .product-card h3 { margin-bottom: 0.5rem; }
+        .product-card .price { color: #27ae60; font-weight: bold; font-size: 1.2rem; }
+        .product-card .stock { color: #7f8c8d; font-size: 0.9rem; margin: 0.5rem 0; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+        .btn-primary { background: #2c3e50; color: white; }
+        .btn-primary:hover { background: #34495e; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .search-bar { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .search-bar input, .search-bar select { padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+        .search-bar input { flex: 1; }
+        form { background: white; padding: 2rem; border-radius: 8px; max-width: 400px; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        form h2 { margin-bottom: 1rem; }
+        form input { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+        form .btn { width: 100%; }
+        .cart-item { background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .message { padding: 0.5rem 1rem; border-radius: 4px; margin-bottom: 1rem; }
+        .message.success { background: #d4edda; color: #155724; }
+        .message.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🛍️ Shop</h1>
+        <nav>
+            <a onclick="showPage('catalog')">Каталог</a>
+            <a onclick="showPage('cart')">🛒 Кошик</a>
+            <a onclick="showPage('orders')">Замовлення</a>
+            <span id="auth-nav">
+                <a onclick="showPage('login')">Вхід</a>
+                <a onclick="showPage('register')">Реєстрація</a>
+            </span>
+            <span id="user-nav" style="display:none">
+                <span id="user-email" style="margin-left:1rem"></span>
+                <a onclick="logout()" style="margin-left:1rem">Вийти</a>
+            </span>
+        </nav>
+    </header>
+
+    <main>
+        <div id="message"></div>
+
+        <!-- Каталог -->
+        <div id="catalog" class="page active">
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Пошук товарів..." oninput="loadProducts()">
+                <select id="category" onchange="loadProducts()">
+                    <option value="">Всі категорії</option>
+                    <option value="Електроніка">Електроніка</option>
+                    <option value="Одяг">Одяг</option>
+                    <option value="Книги">Книги</option>
+                </select>
+            </div>
+            <div id="products" class="products-grid"></div>
+        </div>
+
+        <!-- Кошик -->
+        <div id="cart" class="page">
+            <h2 style="margin-bottom:1rem">Кошик</h2>
+            <div id="cart-items"></div>
+            <div id="cart-total" style="margin-top:1rem;font-size:1.2rem;font-weight:bold"></div>
+            <button class="btn btn-primary" style="margin-top:1rem" onclick="checkout()">Оформити замовлення</button>
+        </div>
+
+        <!-- Замовлення -->
+        <div id="orders" class="page">
+            <h2 style="margin-bottom:1rem">Мої замовлення</h2>
+            <div id="orders-list"></div>
+        </div>
+
+        <!-- Логін -->
+        <div id="login" class="page">
+            <form onsubmit="loginUser(event)">
+                <h2>Вхід</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button type="submit" class="btn btn-primary">Увійти</button>
+            </form>
+        </div>
+
+        <!-- Реєстрація -->
+        <div id="register" class="page">
+            <form onsubmit="registerUser(event)">
+                <h2>Реєстрація</h2>
+                <input type="email" id="reg-email" placeholder="Email" required>
+                <input type="password" id="reg-password" placeholder="Пароль" required>
+                <button type="submit" class="btn btn-primary">Зареєструватись</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const API = 'http://localhost:5088/api';
+
+        function getToken() { return localStorage.getItem('token'); }
+        function getUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
+
+        function showMessage(text, type = 'success') {
+            const el = document.getElementById('message');
+            el.innerHTML = `<div class="message ${type}">${text}</div>`;
+            setTimeout(() => el.innerHTML = '', 3000);
+        }
+
+        function showPage(name) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(name).classList.add('active');
+            if (name === 'catalog') loadProducts();
+            if (name === 'cart') loadCart();
+            if (name === 'orders') loadOrders();
+        }
+
+        function updateNav() {
+            const user = getUser();
+            document.getElementById('auth-nav').style.display = user ? 'none' : 'inline';
+            document.getElementById('user-nav').style.display = user ? 'inline' : 'none';
+            if (user) document.getElementById('user-email').textContent = user.email;
+        }
+
+        async function loadProducts() {
+            const search = document.getElementById('search').value;
+            const category = document.getElementById('category').value;
+            let url = `${API}/Products?`;
+            if (search) url += `search=${search}&`;
+            if (category) url += `category=${category}`;
+
+            const res = await fetch(url);
+            const products = await res.json();
+
+            document.getElementById('products').innerHTML = products.map(p => `
+                <div class="product-card">
+                    <img src="${p.imageUrl}" style="width:100%;height:150px;object-fit:cover;border-radius:4px;margin-bottom:0.5rem" onerror="this.style.display='none'">
+                    <h3>${p.name}</h3>
+                    <p style="color:#666;margin:0.5rem 0">${p.description}</p>
+                    <p class="price">${p.price} грн</p>
+                    <p class="stock">Залишок: ${p.stock} шт</p>
+                    <button class="btn btn-primary" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''}>
+                        ${p.stock === 0 ? 'Немає в наявності' : 'Додати в кошик'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function addToCart(productId) {
+            if (!getToken()) { showPage('login'); return; }
+            const res = await fetch(`${API}/Cart`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+                body: JSON.stringify({ productId, quantity: 1 })
+            });
+            if (res.ok) showMessage('Товар додано в кошик!');
+            else showMessage('Помилка при додаванні', 'error');
+        }
+
+        async function loadCart() {
+            if (!getToken()) { document.getElementById('cart-items').innerHTML = '<p>Увійдіть щоб переглянути кошик</p>'; return; }
+            const res = await fetch(`${API}/Cart`, {
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            const items = await res.json();
+            let total = 0;
+            document.getElementById('cart-items').innerHTML = items.map(i => {
+                total += i.total;
+                return `
+                <div class="cart-item">
+                    <span>${i.productName} x${i.quantity}</span>
+                    <span>${i.total} грн</span>
+                    <button class="btn btn-danger" onclick="removeFromCart(${i.id})">✕</button>
+                </div>`;
+            }).join('');
+            document.getElementById('cart-total').textContent = `Разом: ${total} грн`;
+        }
+
+        async function removeFromCart(id) {
+            await fetch(`${API}/Cart/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            loadCart();
+        }
+
+        async function checkout() {
+            if (!getToken()) { showPage('login'); return; }
+            const res = await fetch(`${API}/Orders/checkout`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            if (res.ok) {
+                showMessage('Замовлення оформлено!');
+                loadCart();
+            } else {
+                const err = await res.text();
+                showMessage(err, 'error');
+            }
+        }
+
+        async function loadOrders() {
+            if (!getToken()) { document.getElementById('orders-list').innerHTML = '<p>Увійдіть щоб переглянути замовлення</p>'; return; }
+            const res = await fetch(`${API}/Orders`, {
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            const orders = await res.json();
+            document.getElementById('orders-list').innerHTML = orders.map(o => `
+                <div style="background:white;padding:1rem;border-radius:8px;margin-bottom:1rem">
+                    <p><strong>Замовлення #${o.id}</strong> — ${o.status}</p>
+                    <p>Дата: ${new Date(o.createdAt).toLocaleDateString('uk-UA')}</p>
+                    <p>Сума: ${o.totalPrice} грн</p>
+                </div>
+            `).join('');
+        }
+
+        async function loginUser(e) {
+            e.preventDefault();
+            const res = await fetch(`${API}/Auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: document.getElementById('login-email').value, password: document.getElementById('login-password').value })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify({ email: data.email, role: data.role }));
+                updateNav();
+                showPage('catalog');
+                showMessage('Ви увійшли!');
+            } else showMessage('Невірний email або пароль', 'error');
+        }
+
+        async function registerUser(e) {
+            e.preventDefault();
+            const res = await fetch(`${API}/Auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: document.getElementById('reg-email').value, password: document.getElementById('reg-password').value })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify({ email: data.email, role: data.role }));
+                updateNav();
+                showPage('catalog');
+                showMessage('Реєстрація успішна!');
+            } else showMessage('Помилка реєстрації', 'error');
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            updateNav();
+            showPage('catalog');
+        }
+
+        updateNav();
+        loadProducts();
+    </script>
+</body>
+</html>
