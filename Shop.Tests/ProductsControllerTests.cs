@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.API.Controllers;
 using Shop.API.Data;
+using Shop.API.DTOs;
 using Shop.API.Models;
 
 namespace Shop.Tests;
@@ -29,7 +30,7 @@ public class ProductsControllerTests
         var controller = new ProductsController(context);
         var result = await controller.GetProducts(null, null);
 
-        var items = Assert.IsAssignableFrom<IEnumerable<Product>>(result.Value);
+        var items = Assert.IsAssignableFrom<IEnumerable<ProductDto>>(result.Value);
         Assert.Equal(2, items.Count());
     }
 
@@ -39,7 +40,7 @@ public class ProductsControllerTests
         var context = GetInMemoryContext();
         var controller = new ProductsController(context);
 
-        var result = await controller.CreateProduct(new Product { Name = "Test", Price = -100, Stock = 5 });
+        var result = await controller.CreateProduct(new CreateProductDto { Name = "Test", Price = -100, Stock = 5 });
 
         Assert.IsType<BadRequestObjectResult>(result.Result);
     }
@@ -68,7 +69,7 @@ public class ProductsControllerTests
         var controller = new ProductsController(context);
         var result = await controller.GetProducts("Електроніка", null);
 
-        var items = Assert.IsAssignableFrom<IEnumerable<Product>>(result.Value);
+        var items = Assert.IsAssignableFrom<IEnumerable<ProductDto>>(result.Value);
         Assert.Single(items);
     }
 }

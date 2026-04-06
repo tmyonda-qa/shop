@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.API.Data;
+using Shop.API.DTOs;
 using Shop.API.Models;
 
 namespace Shop.API.Controllers;
@@ -18,7 +19,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts(
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
         [FromQuery] string? category,
         [FromQuery] string? search)
     {
@@ -30,42 +31,88 @@ public class ProductsController : ControllerBase
         if (!string.IsNullOrEmpty(search))
             query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
 
-        return await query.ToListAsync();
+        return await query.Select(p => new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description,
+            Price = p.Price,
+            Category = p.Category,
+            ImageUrl = p.ImageUrl,
+            Stock = p.Stock
+        }).ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(int id)
+    public async Task<ActionResult<ProductDto>> GetProduct(int id)
     {
         var product = await _context.Products.FindAsync(id);
         if (product == null)
             return NotFound();
-        return product;
+
+        return new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            Category = product.Category,
+            ImageUrl = product.ImageUrl,
+            Stock = product.Stock
+        };
     }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<Product>> CreateProduct(Product product)
+    public async Task<ActionResult<ProductDto>> CreateProduct(CreateProductDto dto)
     {
-        if (product.Price < 0)
+        if (dto.Price < 0)
             return BadRequest("Price cannot be negative");
-        if (product.Stock < 0)
+        if (dto.Stock < 0)
             return BadRequest("Stock cannot be negative");
+
+        var product = new Product
+        {
+            Name = dto.Name,
+            Description = dto.Description,
+            Price = dto.Price,
+            Category = dto.Category,
+            ImageUrl = dto.ImageUrl,
+            Stock = dto.Stock
+        };
 
         _context.Products.Add(product);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+
+        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            Category = product.Category,
+            ImageUrl = product.ImageUrl,
+            Stock = product.Stock
+        });
     }
 
     [HttpPut("{id}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> UpdateProduct(int id, Product product)
+    public async Task<IActionResult> UpdateProduct(int id, CreateProductDto dto)
     {
-        if (id != product.Id)
-            return BadRequest();
-        if (product.Price < 0)
+        var product = await _context.Products.FindAsync(id);
+        if (product == null)
+            return NotFound();
+        if (dto.Price < 0)
             return BadRequest("Price cannot be negative");
 
-        _context.Entry(product).State = EntityState.Modified;
+        product.Name = dto.Name;
+        product.Description = dto.Description;
+        product.Price = dto.Price;
+        product.Category = dto.Category;
+        product.ImageUrl = dto.ImageUrl;
+        product.Stock = dto.Stock;
+
         await _context.SaveChangesAsync();
         return NoContent();
     }
