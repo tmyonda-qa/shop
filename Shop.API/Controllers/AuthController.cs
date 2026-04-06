@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -83,5 +84,29 @@ public class AuthController : ControllerBase
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    [HttpPost("register-admin")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<AuthResponseDto>> RegisterAdmin(RegisterDto dto)
+    {
+        if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+            return BadRequest("User with this email already exists");
+
+        var user = new User
+        {
+            Email = dto.Email,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+            Role = "Admin"
+        };
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        return Ok(new AuthResponseDto
+        {
+            Token = GenerateToken(user),
+            Email = user.Email,
+            Role = user.Role
+        });
     }
 }

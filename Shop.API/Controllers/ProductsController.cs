@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.API.Data;
@@ -17,9 +18,19 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<Product>>> GetProducts(
+        [FromQuery] string? category,
+        [FromQuery] string? search)
     {
-        return await _context.Products.ToListAsync();
+        var query = _context.Products.AsQueryable();
+
+        if (!string.IsNullOrEmpty(category))
+            query = query.Where(p => p.Category == category);
+
+        if (!string.IsNullOrEmpty(search))
+            query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
+
+        return await query.ToListAsync();
     }
 
     [HttpGet("{id}")]
@@ -32,6 +43,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
         if (product.Price < 0)
@@ -45,6 +57,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateProduct(int id, Product product)
     {
         if (id != product.Id)
@@ -58,6 +71,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var product = await _context.Products.FindAsync(id);
