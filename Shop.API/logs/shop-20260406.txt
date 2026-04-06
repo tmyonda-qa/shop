@@ -191,3 +191,14 @@ FROM "Products" AS p
 2026-04-06 15:56:13.400 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 1.8262ms
 2026-04-06 15:56:13.400 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
 2026-04-06 15:56:13.400 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Products? - 200 null application/json; charset=utf-8 2.3985ms
+2026-04-06 15:59:34.826 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Products? - null null
+2026-04-06 15:59:34.826 +03:00 [INF] CORS policy execution successful.
+2026-04-06 15:59:34.830 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:59:34.830 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.ProductDto]]] GetProducts(System.String, System.String) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-06 15:59:34.833 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."Name", p."Description", p."Price", p."Category", p."ImageUrl", p."Stock"
+FROM "Products" AS p
+2026-04-06 15:59:34.835 +03:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.ProductDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-06 15:59:34.836 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 5.5386ms
+2026-04-06 15:59:34.836 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-06 15:59:34.836 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Products? - 200 null application/json; charset=utf-8 9.8406ms
