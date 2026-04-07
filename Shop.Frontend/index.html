@@ -77,7 +77,7 @@
                     <option value="">Виберіть категорію</option>
                     <option value="Електроніка">Електроніка</option>
                     <option value="Автомобіль">Автомобіль</option>
-                    <option value="Мяка іграшка">Іграшка</option>
+                    <option value="Іграшка">Іграшка</option>
                 </select>
                 <input type="text" id="admin-image" placeholder="URL фото" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
                 <input type="number" id="admin-stock" placeholder="Залишок" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:4px">
@@ -99,7 +99,7 @@
                 <option value="">Всі категорії</option>
                 <option value="Електроніка">Електроніка</option>
                 <option value="Автомобіль">Автомобілі</option>
-                <option value="Мяка іграшка">Іграшки</option>
+                <option value="Іграшка">Іграшки</option>
             </select>
         </div>
         <div id="products" class="products-grid"></div>
@@ -111,7 +111,12 @@
         <button class="btn btn-primary" style="margin-top:1rem" onclick="checkout()">Оформити замовлення</button>
     </div>
     <div id="orders" class="page">
-        <h2 style="margin-bottom:1rem">Мої замовлення</h2>
+        <div id="admin-orders-section" style="display:none">
+            <h2 style="margin-bottom:1rem">Всі замовлення клієнтів <span id="admin-orders-count" style="background:#2c3e50;color:white;border-radius:50%;padding:0.1rem 0.5rem;font-size:0.9rem"></span></h2>
+            <div id="admin-orders-list"></div>
+            <hr style="margin:2rem 0">
+        </div>
+        <h2 style="margin-bottom:1rem">Мої замовлення <span id="my-orders-count" style="background:#2c3e50;color:white;border-radius:50%;padding:0.1rem 0.5rem;font-size:0.9rem"></span></h2>
         <div id="orders-list"></div>
     </div>
     <div id="login" class="page">
@@ -147,6 +152,25 @@
         localStorage.setItem('currentPage', name);
         if (name === 'catalog') loadProducts();
         if (name === 'admin') loadAdminProducts();
+        if (name === 'orders') {
+            const user = getUser();
+            if (user?.role === 'Admin') {
+                document.getElementById('admin-orders-section').style.display = 'block';
+                loadAdminOrders();
+            } else {
+                document.getElementById('admin-orders-section').style.display = 'none';
+            }
+        }
+        if (name === 'orders') {
+            const user = getUser();
+            if (user?.role === 'Admin') {
+                document.getElementById('admin-orders-section').style.display = 'block';
+                loadAdminOrders();
+            } else {
+                document.getElementById('admin-orders-section').style.display = 'none';
+            }
+            loadOrders();
+        }
         if (name === 'cart') loadCart();
         if (name === 'orders') loadOrders();
     }
@@ -183,6 +207,7 @@
                 <img src="${p.imageUrl}" class="product-img" onerror="this.style.display='none'">
                 <h3>${p.name}</h3>
                 <p style="color:#666;margin:0.5rem 0">${p.description}</p>
+                <p style="color:#888;font-size:0.85rem;margin:0.2rem 0">📁 ${p.category}</p>
                 <p class="price">${p.price} грн</p>
                 <p class="stock">Залишок: ${p.stock} шт</p>
                 <button class="btn ${inCart ? 'btn-in-cart' : 'btn-primary'}" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''}>
@@ -220,14 +245,14 @@
         document.getElementById('cart-items').innerHTML = items.map(i => {
             total += i.total;
             return `
-        <div class="cart-item">
+        <div class="cart-item" data-cart-id="${i.id}">
             <span>${i.productName}</span>
             <div style="display:flex;align-items:center;gap:0.5rem">
                 <button class="btn btn-primary" style="padding:0.2rem 0.6rem" onclick="changeQuantity(${i.id}, ${i.quantity - 1})">−</button>
-                <span style="min-width:24px;text-align:center">${i.quantity}</span>
+                <span class="cart-quantity" style="min-width:24px;text-align:center">${i.quantity}</span>
                 <button class="btn btn-primary" style="padding:0.2rem 0.6rem" onclick="changeQuantity(${i.id}, ${i.quantity + 1})">+</button>
             </div>
-            <span>${i.total} грн</span>
+            <span class="cart-price" data-price="${i.price}">${i.total} грн</span>
             <button class="btn btn-danger" onclick="removeFromCart(${i.id})">✕</button>
         </div>`;
         }).join('');
@@ -248,18 +273,41 @@
         }
     }
     async function changeQuantity(id, newQuantity) {
-        if (newQuantity <= 0) {
-            removeFromCart(id);
+        if (newQuantity < 0) return;
+
+        if (newQuantity === 0) {
+            await fetch(`${API}/Cart/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            loadCart();
+            updateCartCount();
+            loadProducts();
             return;
         }
-        await fetch(`${API}/Cart/${id}`, {
+
+        const res = await fetch(`${API}/Cart/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
             body: JSON.stringify({ productId: 0, quantity: newQuantity })
         });
-        loadCart();
-        updateCartCount();
-        loadProducts();
+        if (res.ok) {
+            loadCart();
+            updateCartCount();
+            loadProducts();
+        } else {
+            showMessage('Товару немає в наявності', 'error');
+        }
+    }
+
+    function recalculateTotal() {
+        let total = 0;
+        document.querySelectorAll('.cart-item').forEach(item => {
+            const qty = parseInt(item.querySelector('.cart-quantity').textContent);
+            const price = parseInt(item.querySelector('.cart-price').textContent);
+            total += qty * price;
+        });
+        document.getElementById('cart-total').textContent = `Разом: ${total} грн`;
     }
     async function removeFromCart(id) {
         await fetch(`${API}/Cart/${id}`, {
@@ -280,13 +328,22 @@
         if (!getToken()) { document.getElementById('orders-list').innerHTML = '<p>Увійдіть щоб переглянути замовлення</p>'; return; }
         const res = await fetch(`${API}/Orders`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
         const orders = await res.json();
+
+        document.getElementById('my-orders-count').textContent = orders.length;
+
         document.getElementById('orders-list').innerHTML = orders.map(o => `
-                <div style="background:white;padding:1rem;border-radius:8px;margin-bottom:1rem">
-                    <p><strong>Замовлення #${o.id}</strong> — ${o.status}</p>
-                    <p>Дата: ${new Date(o.createdAt).toLocaleDateString('uk-UA')}</p>
-                    <p>Сума: ${o.totalPrice} грн</p>
-                </div>
-            `).join('');
+        <div style="background:white;padding:1rem;border-radius:8px;margin-bottom:1rem">
+<p><strong>Замовлення #${o.id}</strong> — <span style="color:${o.status === 'Скасовано' ? '#e74c3c' : o.status === 'Delivered' ? '#27ae60' : '#f39c12'}">${o.status}</span></p>
+            <p>Дата: ${new Date(o.createdAt).toLocaleDateString('uk-UA')}</p>
+            <div style="margin:0.5rem 0;border-top:1px solid #eee;padding-top:0.5rem">
+                ${o.items.map(i => `<p style="color:#555;margin:0.2rem 0">• ${i.productName} × ${i.quantity} — ${i.price * i.quantity} грн</p>`).join('')}
+            </div>
+            <div style="border-top:1px solid #eee;margin-top:0.5rem;padding-top:0.5rem">
+                <p><strong>Сума: ${o.totalPrice} грн</strong></p>
+            </div>
+${o.status !== 'Скасовано' ? `<button class="btn btn-danger" style="margin-top:0.5rem" onclick="cancelOrder(${o.id})">Скасувати замовлення</button>` : '<p style="color:#e74c3c;margin-top:0.5rem">❌ Замовлення скасовано</p>'}
+        </div>
+    `).join('');
     }
     async function loginUser(e) {
         e.preventDefault();
@@ -323,7 +380,7 @@
                 <div style="background:white;padding:1rem;border-radius:8px;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center">
                     <div><strong>${p.name}</strong> — ${p.price} грн — залишок: ${p.stock}</div>
                     <div style="display:flex;gap:0.5rem">
-                        <button class="btn btn-primary" onclick="editProduct(${p.id},'${p.name}','${p.description}',${p.price},'${p.category}','${p.imageUrl}',${p.stock})">Редагувати</button>
+<button class="btn btn-primary" onclick="editProduct(${p.id})">Редагувати</button>
                         <button class="btn btn-danger" onclick="deleteProduct(${p.id})">Видалити</button>
                     </div>
                 </div>
@@ -340,14 +397,16 @@
         document.getElementById('admin-form-title').textContent = 'Новий товар';
         document.getElementById('admin-form').style.display = 'block';
     }
-    function editProduct(id, name, description, price, category, imageUrl, stock) {
-        document.getElementById('admin-product-id').value = id;
-        document.getElementById('admin-name').value = name;
-        document.getElementById('admin-description').value = description;
-        document.getElementById('admin-price').value = price;
-        document.getElementById('admin-category').value = category;
-        document.getElementById('admin-image').value = imageUrl;
-        document.getElementById('admin-stock').value = stock;
+    async function editProduct(id) {
+        const res = await fetch(`${API}/Products/${id}`);
+        const p = await res.json();
+        document.getElementById('admin-product-id').value = p.id;
+        document.getElementById('admin-name').value = p.name;
+        document.getElementById('admin-description').value = p.description;
+        document.getElementById('admin-price').value = p.price;
+        document.getElementById('admin-category').value = p.category;
+        document.getElementById('admin-image').value = p.imageUrl;
+        document.getElementById('admin-stock').value = p.stock;
         document.getElementById('admin-form-title').textContent = 'Редагувати товар';
         document.getElementById('admin-form').style.display = 'block';
     }
@@ -402,6 +461,60 @@
         const res = await fetch(`${API}/Products/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${getToken()}` } });
         if (res.ok) { showMessage('Товар видалено!'); loadAdminProducts(); }
         else showMessage('Помилка при видаленні', 'error');
+    }
+    async function cancelOrder(id) {
+        if (!confirm('Скасувати замовлення?')) return;
+        const res = await fetch(`${API}/Orders/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        if (res.ok) {
+            showMessage('Замовлення скасовано');
+            loadOrders();
+            loadProducts();
+        } else showMessage('Помилка при скасуванні', 'error');
+    }
+    async function loadAdminOrders() {
+        const res = await fetch(`${API}/Orders/all`, {
+            headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        if (!res.ok) return;
+        const orders = await res.json();
+        const user = getUser();
+        const clientOrders = orders.filter(o => o.userEmail !== user.email);
+
+        document.getElementById('admin-orders-count').textContent = clientOrders.length;
+
+        document.getElementById('admin-orders-list').innerHTML = clientOrders.length === 0
+            ? '<p>Немає замовлень від клієнтів</p>'
+            : clientOrders.map(o => `
+        <div style="background:white;padding:1rem;border-radius:8px;margin-bottom:1rem">
+            <p><strong>Замовлення #${o.id}</strong> — <span style="color:#666">${o.userEmail}</span></p>
+            <p>Дата: ${new Date(o.createdAt).toLocaleDateString('uk-UA')}</p>
+            <div style="margin:0.5rem 0;border-top:1px solid #eee;padding-top:0.5rem">
+                ${o.items.map(i => `<p style="color:#555;margin:0.2rem 0">• ${i.productName} × ${i.quantity} — ${i.price * i.quantity} грн</p>`).join('')}
+            </div>
+            <div style="border-top:1px solid #eee;margin-top:0.5rem;padding-top:0.5rem;display:flex;align-items:center;gap:1rem">
+                <p><strong>Сума: ${o.totalPrice} грн</strong></p>
+                <select onchange="updateOrderStatus(${o.id}, this.value)" style="padding:0.3rem;border:1px solid #ddd;border-radius:4px">
+                    <option ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                    <option ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                    <option ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                    <option ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                    <option ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+            </div>
+        </div>
+    `).join('');
+    }
+    async function updateOrderStatus(id, status) {
+        const res = await fetch(`${API}/Orders/${id}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+            body: JSON.stringify(status)
+        });
+        if (res.ok) showMessage('Статус оновлено!');
+        else showMessage('Помилка при оновленні статусу', 'error');
     }
     function logout() {
         localStorage.removeItem('token');

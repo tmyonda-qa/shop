@@ -92,4 +92,62 @@ public class OrdersController : ControllerBase
 
         return Ok(orders);
     }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> CancelOrder(int id)
+    {
+        var userId = GetUserId();
+        var order = await _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(i => i.Product)
+            .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
+
+        if (order == null)
+            return NotFound();
+
+        foreach (var item in order.Items)
+            item.Product.Stock += item.Quantity;
+
+        order.Status = "Скасовано";
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
+    [HttpGet("all")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllOrders()
+    {
+        var orders = await _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(i => i.Product)
+            .Include(o => o.User)
+            .Select(o => new
+            {
+                o.Id,
+                o.CreatedAt,
+                o.Status,
+                o.TotalPrice,
+                UserEmail = o.User.Email,
+                Items = o.Items.Select(i => new
+                {
+                    i.ProductId,
+                    ProductName = i.Product.Name,
+                    i.Quantity,
+                    i.Price
+                })
+            })
+            .ToListAsync();
+        return Ok(orders);
+    }
+
+    [HttpPut("{id}/status")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
+    {
+        var order = await _context.Orders.FindAsync(id);
+        if (order == null)
+            return NotFound();
+
+        order.Status = status;
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 }
