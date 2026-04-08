@@ -1,0 +1,136 @@
+2026-04-08 09:55:31.554 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - null null
+2026-04-08 09:55:31.554 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Products? - null null
+2026-04-08 09:55:31.566 +03:00 [INF] CORS policy execution successful.
+2026-04-08 09:55:31.566 +03:00 [INF] CORS policy execution successful.
+2026-04-08 09:55:31.567 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - 204 null null 12.0806ms
+2026-04-08 09:55:31.567 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-08 09:55:31.572 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.ProductDto]]] GetProducts(System.String, System.String) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-08 09:55:31.579 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Cart - null null
+2026-04-08 09:55:31.579 +03:00 [INF] CORS policy execution successful.
+2026-04-08 09:55:31.581 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 09:55:31.581 +03:00 [INF] Route matched with {action = "GetCart", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.CartItemDto]]] GetCart() on controller Shop.API.Controllers.CartController (Shop.API).
+2026-04-08 09:55:31.605 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."Name", p."Description", p."Price", p."Category", p."ImageUrl", p."Stock"
+FROM "Products" AS p
+2026-04-08 09:55:31.607 +03:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.ProductDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 09:55:31.607 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 34.8561ms
+2026-04-08 09:55:31.607 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-08 09:55:31.608 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Products? - 200 null application/json; charset=utf-8 53.3505ms
+2026-04-08 09:55:31.610 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - null null
+2026-04-08 09:55:31.610 +03:00 [INF] CORS policy execution successful.
+2026-04-08 09:55:31.611 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - 204 null null 0.2414ms
+2026-04-08 09:55:31.613 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT c."Id", c."ProductId", p."Name" AS "ProductName", p."Price", c."Quantity"
+FROM "CartItems" AS c
+INNER JOIN "Products" AS p ON c."ProductId" = p."Id"
+WHERE c."UserId" = @__userId_0
+2026-04-08 09:55:31.613 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.CartItemDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 09:55:31.613 +03:00 [INF] Executed action Shop.API.Controllers.CartController.GetCart (Shop.API) in 23.4028ms
+2026-04-08 09:55:31.613 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 09:55:31.613 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Cart - 200 null application/json; charset=utf-8 34.4638ms
+2026-04-08 09:55:31.614 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Cart - null null
+2026-04-08 09:55:31.614 +03:00 [INF] CORS policy execution successful.
+2026-04-08 09:55:31.614 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 09:55:31.614 +03:00 [INF] Route matched with {action = "GetCart", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.CartItemDto]]] GetCart() on controller Shop.API.Controllers.CartController (Shop.API).
+2026-04-08 09:55:31.618 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT c."Id", c."ProductId", p."Name" AS "ProductName", p."Price", c."Quantity"
+FROM "CartItems" AS c
+INNER JOIN "Products" AS p ON c."ProductId" = p."Id"
+WHERE c."UserId" = @__userId_0
+2026-04-08 09:55:31.618 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.CartItemDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 09:55:31.619 +03:00 [INF] Executed action Shop.API.Controllers.CartController.GetCart (Shop.API) in 4.5802ms
+2026-04-08 09:55:31.619 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 09:55:31.619 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Cart - 200 null application/json; charset=utf-8 5.4309ms
+2026-04-08 10:05:17.607 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Products? - null null
+2026-04-08 10:05:17.608 +03:00 [INF] CORS policy execution successful.
+2026-04-08 10:05:17.608 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-08 10:05:17.609 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.ProductDto]]] GetProducts(System.String, System.String) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-08 10:05:17.619 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - null null
+2026-04-08 10:05:17.619 +03:00 [INF] CORS policy execution successful.
+2026-04-08 10:05:17.619 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - 204 null null 0.3415ms
+2026-04-08 10:05:17.620 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Cart - null null
+2026-04-08 10:05:17.620 +03:00 [INF] CORS policy execution successful.
+2026-04-08 10:05:17.620 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 10:05:17.620 +03:00 [INF] Route matched with {action = "GetCart", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.CartItemDto]]] GetCart() on controller Shop.API.Controllers.CartController (Shop.API).
+2026-04-08 10:05:17.624 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."Name", p."Description", p."Price", p."Category", p."ImageUrl", p."Stock"
+FROM "Products" AS p
+2026-04-08 10:05:17.624 +03:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.ProductDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 10:05:17.625 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 15.1391ms
+2026-04-08 10:05:17.625 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-08 10:05:17.625 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Products? - 200 null application/json; charset=utf-8 17.5935ms
+2026-04-08 10:05:17.626 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - null null
+2026-04-08 10:05:17.626 +03:00 [INF] CORS policy execution successful.
+2026-04-08 10:05:17.627 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - 204 null null 0.24ms
+2026-04-08 10:05:17.629 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT c."Id", c."ProductId", p."Name" AS "ProductName", p."Price", c."Quantity"
+FROM "CartItems" AS c
+INNER JOIN "Products" AS p ON c."ProductId" = p."Id"
+WHERE c."UserId" = @__userId_0
+2026-04-08 10:05:17.629 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.CartItemDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 10:05:17.630 +03:00 [INF] Executed action Shop.API.Controllers.CartController.GetCart (Shop.API) in 9.3529ms
+2026-04-08 10:05:17.630 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 10:05:17.630 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Cart - 200 null application/json; charset=utf-8 10.0441ms
+2026-04-08 10:05:17.630 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Cart - null null
+2026-04-08 10:05:17.630 +03:00 [INF] CORS policy execution successful.
+2026-04-08 10:05:17.631 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 10:05:17.631 +03:00 [INF] Route matched with {action = "GetCart", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.CartItemDto]]] GetCart() on controller Shop.API.Controllers.CartController (Shop.API).
+2026-04-08 10:05:17.633 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT c."Id", c."ProductId", p."Name" AS "ProductName", p."Price", c."Quantity"
+FROM "CartItems" AS c
+INNER JOIN "Products" AS p ON c."ProductId" = p."Id"
+WHERE c."UserId" = @__userId_0
+2026-04-08 10:05:17.633 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.CartItemDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 10:05:17.634 +03:00 [INF] Executed action Shop.API.Controllers.CartController.GetCart (Shop.API) in 2.8799ms
+2026-04-08 10:05:17.634 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 10:05:17.634 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Cart - 200 null application/json; charset=utf-8 3.5036ms
+2026-04-08 11:30:15.813 +03:00 [INF] Application is shutting down...
+2026-04-08 11:31:02.645 +03:00 [INF] User profile is available. Using '/Users/tarasyonda/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-04-08 11:31:02.713 +03:00 [INF] Now listening on: http://localhost:5088
+2026-04-08 11:31:02.714 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-04-08 11:31:02.714 +03:00 [INF] Hosting environment: Development
+2026-04-08 11:31:02.714 +03:00 [INF] Content root path: /Users/tarasyonda/RiderProjects/shop/Shop.API
+2026-04-08 11:31:10.377 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Products? - null null
+2026-04-08 11:31:10.377 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - null null
+2026-04-08 11:31:10.397 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-08 11:31:10.399 +03:00 [INF] CORS policy execution successful.
+2026-04-08 11:31:10.399 +03:00 [INF] CORS policy execution successful.
+2026-04-08 11:31:10.402 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - 204 null null 25.4878ms
+2026-04-08 11:31:10.409 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Cart - null null
+2026-04-08 11:31:10.410 +03:00 [INF] CORS policy execution successful.
+2026-04-08 11:31:10.419 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-08 11:31:10.428 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.ProductDto]]] GetProducts(System.String, System.String) on controller Shop.API.Controllers.ProductsController (Shop.API).
+2026-04-08 11:31:10.450 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 11:31:10.451 +03:00 [INF] Route matched with {action = "GetCart", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.CartItemDto]]] GetCart() on controller Shop.API.Controllers.CartController (Shop.API).
+2026-04-08 11:31:10.976 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."Name", p."Description", p."Price", p."Category", p."ImageUrl", p."Stock"
+FROM "Products" AS p
+2026-04-08 11:31:10.978 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT c."Id", c."ProductId", p."Name" AS "ProductName", p."Price", c."Quantity"
+FROM "CartItems" AS c
+INNER JOIN "Products" AS p ON c."ProductId" = p."Id"
+WHERE c."UserId" = @__userId_0
+2026-04-08 11:31:10.989 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.CartItemDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 11:31:10.989 +03:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.ProductDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 11:31:11.005 +03:00 [INF] Executed action Shop.API.Controllers.CartController.GetCart (Shop.API) in 552.1016ms
+2026-04-08 11:31:11.005 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 11:31:11.006 +03:00 [INF] Executed action Shop.API.Controllers.ProductsController.GetProducts (Shop.API) in 576.9165ms
+2026-04-08 11:31:11.006 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.ProductsController.GetProducts (Shop.API)'
+2026-04-08 11:31:11.009 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Products? - 200 null application/json; charset=utf-8 633.2835ms
+2026-04-08 11:31:11.009 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Cart - 200 null application/json; charset=utf-8 600.134ms
+2026-04-08 11:31:11.010 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - null null
+2026-04-08 11:31:11.010 +03:00 [INF] CORS policy execution successful.
+2026-04-08 11:31:11.010 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5088/api/Cart - 204 null null 0.2542ms
+2026-04-08 11:31:11.011 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5088/api/Cart - null null
+2026-04-08 11:31:11.011 +03:00 [INF] CORS policy execution successful.
+2026-04-08 11:31:11.012 +03:00 [INF] Executing endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 11:31:11.012 +03:00 [INF] Route matched with {action = "GetCart", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[Shop.API.DTOs.CartItemDto]]] GetCart() on controller Shop.API.Controllers.CartController (Shop.API).
+2026-04-08 11:31:11.042 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT c."Id", c."ProductId", p."Name" AS "ProductName", p."Price", c."Quantity"
+FROM "CartItems" AS c
+INNER JOIN "Products" AS p ON c."ProductId" = p."Id"
+WHERE c."UserId" = @__userId_0
+2026-04-08 11:31:11.043 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Shop.API.DTOs.CartItemDto, Shop.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-08 11:31:11.043 +03:00 [INF] Executed action Shop.API.Controllers.CartController.GetCart (Shop.API) in 30.3602ms
+2026-04-08 11:31:11.043 +03:00 [INF] Executed endpoint 'Shop.API.Controllers.CartController.GetCart (Shop.API)'
+2026-04-08 11:31:11.043 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5088/api/Cart - 200 null application/json; charset=utf-8 32.5721ms

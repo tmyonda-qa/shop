@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.API.Data;
+using Shop.API.DTOs;
 using Shop.API.Models;
 
 namespace Shop.API.Controllers;
@@ -74,24 +75,66 @@ public class OrdersController : ControllerBase
             .Include(o => o.Items)
             .ThenInclude(i => i.Product)
             .Where(o => o.UserId == userId)
-            .Select(o => new
+            .Select(o => new OrderDto
             {
-                o.Id,
-                o.CreatedAt,
-                o.Status,
-                o.TotalPrice,
-                Items = o.Items.Select(i => new
+                Id = o.Id,
+                CreatedAt = o.CreatedAt,
+                Status = o.Status,
+                TotalPrice = o.TotalPrice,
+                Items = o.Items.Select(i => new OrderItemDto
                 {
-                    i.ProductId,
+                    ProductId = i.ProductId,
                     ProductName = i.Product.Name,
-                    i.Quantity,
-                    i.Price
-                })
+                    Quantity = i.Quantity,
+                    Price = i.Price
+                }).ToList()
             })
             .ToListAsync();
 
         return Ok(orders);
     }
+
+    [HttpGet("all")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllOrders()
+    {
+        var orders = await _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(i => i.Product)
+            .Include(o => o.User)
+            .Select(o => new AdminOrderDto
+            {
+                Id = o.Id,
+                CreatedAt = o.CreatedAt,
+                Status = o.Status,
+                TotalPrice = o.TotalPrice,
+                UserEmail = o.User.Email,
+                Items = o.Items.Select(i => new OrderItemDto
+                {
+                    ProductId = i.ProductId,
+                    ProductName = i.Product.Name,
+                    Quantity = i.Quantity,
+                    Price = i.Price
+                }).ToList()
+            })
+            .ToListAsync();
+
+        return Ok(orders);
+    }
+
+    [HttpPut("{id}/status")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
+    {
+        var order = await _context.Orders.FindAsync(id);
+        if (order == null)
+            return NotFound();
+
+        order.Status = status;
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> CancelOrder(int id)
     {
@@ -108,45 +151,6 @@ public class OrdersController : ControllerBase
             item.Product.Stock += item.Quantity;
 
         order.Status = "Скасовано";
-        await _context.SaveChangesAsync();
-        return NoContent();
-    }
-    [HttpGet("all")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAllOrders()
-    {
-        var orders = await _context.Orders
-            .Include(o => o.Items)
-            .ThenInclude(i => i.Product)
-            .Include(o => o.User)
-            .Select(o => new
-            {
-                o.Id,
-                o.CreatedAt,
-                o.Status,
-                o.TotalPrice,
-                UserEmail = o.User.Email,
-                Items = o.Items.Select(i => new
-                {
-                    i.ProductId,
-                    ProductName = i.Product.Name,
-                    i.Quantity,
-                    i.Price
-                })
-            })
-            .ToListAsync();
-        return Ok(orders);
-    }
-
-    [HttpPut("{id}/status")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
-    {
-        var order = await _context.Orders.FindAsync(id);
-        if (order == null)
-            return NotFound();
-
-        order.Status = status;
         await _context.SaveChangesAsync();
         return NoContent();
     }
