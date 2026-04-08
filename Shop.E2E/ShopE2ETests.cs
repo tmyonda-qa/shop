@@ -46,4 +46,26 @@ public class ShopE2ETests : PageTest
         var message = await Page.IsVisibleAsync(".message.success");
         Assert.That(message, Is.True);
     }
+    [Test]
+    public async Task Checkout_WithItemsInCart_CreatesOrder()
+    {
+        await Page.GotoAsync(FrontendUrl);
+        await Page.ClickAsync("a[onclick=\"showPage('login')\"]");
+        await Page.FillAsync("#login-email", "admin@shop.com");
+        await Page.FillAsync("#login-password", "Admin123!");
+        await Page.ClickAsync("button[type='submit']");
+        await Page.WaitForSelectorAsync(".product-card");
+
+        await Page.ClickAsync(".product-card button:not([disabled])");
+        await Page.WaitForSelectorAsync(".message.success");
+
+        await Page.ClickAsync("a[onclick=\"showPage('cart')\"]");
+        await Page.WaitForSelectorAsync(".cart-item");
+
+        await Page.ClickAsync("button[onclick='checkout()']");
+        await Page.WaitForSelectorAsync(".message.success");
+
+        var message = await Page.IsVisibleAsync(".message.success");
+        Assert.That(message, Is.True);
+    }
 }
