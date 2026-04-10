@@ -46,23 +46,23 @@
 <header>
     <h1>🛍️ Shop</h1>
     <nav>
-        <a onclick="showPage('catalog')">Каталог</a>
-        <a id="admin-link" style="display:none" onclick="showPage('admin')">Адмін</a>
-        <a id="cart-link" onclick="showPage('cart')">🛒 Кошик</a>
-        <a onclick="showPage('orders')">Замовлення</a>
+        <a onclick="showPage('catalog')" data-test="catalog">Каталог</a>
+        <a id="admin-link" style="display:none" onclick="showPage('admin')" data-test="admin">Адмін</a>
+        <a id="cart-link" onclick="showPage('cart')" data-test="cart">🛒 Кошик</a>
+        <a onclick="showPage('orders')" data-test="orders">Замовлення</a>
         <span id="auth-nav">
                 <a onclick="showPage('login')">Вхід</a>
-                <a onclick="showPage('register')">Реєстрація</a>
+                <a onclick="showPage('register')" data-test="Registration">Реєстрація</a>
             </span>
         <span id="user-nav" style="display:none">
-                <span id="user-email" style="margin-left:1rem"></span>
-                <a onclick="logout()" style="margin-left:1rem">Вийти</a>
+                <span id="user-email" style="margin-left:1rem" data-test="user-email"></span>
+                <a onclick="logout()" style="margin-left:1rem" data-test="logout">Вийти</a>
             </span>
     </nav>
 </header>
 
 <main>
-    <div id="message"></div>
+    <div id="message" data-test="message"></div>
     <div id="admin" class="page">
         <h2 style="margin-bottom:1rem">Управління товарами</h2>
         <button class="btn btn-primary" style="margin-bottom:1rem" onclick="showAdminForm()">+ Додати товар</button>
@@ -127,12 +127,12 @@
             <button type="submit" class="btn btn-primary">Увійти</button>
         </form>
     </div>
-    <div id="register" class="page">
+    <div id="register" class="page" data-test="registration-page">
         <form onsubmit="registerUser(event)">
             <h2>Реєстрація</h2>
-            <input type="email" id="reg-email" placeholder="Email" required>
-            <input type="password" id="reg-password" placeholder="Пароль" required>
-            <button type="submit" class="btn btn-primary">Зареєструватись</button>
+            <input type="email" id="reg-email" placeholder="Email" required data-test="email">
+            <input type="password" id="reg-password" placeholder="Пароль" required data-test="password">
+            <button type="submit" class="btn btn-primary" data-test="Register">Зареєструватись</button>
         </form>
     </div>
 </main>
@@ -143,7 +143,7 @@
     function getUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
     function showMessage(text, type = 'success') {
         const el = document.getElementById('message');
-        el.innerHTML = `<div class="message ${type}">${text}</div>`;
+        el.innerHTML = `<div class="message ${type}" data-test="message-${type}">${text}</div>`;
         setTimeout(() => el.innerHTML = '', 3000);
     }
     function showPage(name) {
@@ -203,17 +203,17 @@
         document.getElementById('products').innerHTML = products.map(p => {
             const inCart = cartItems.find(i => i.productId === p.id);
             return `
-            <div class="product-card">
-                <img src="${p.imageUrl}" class="product-img" onerror="this.style.display='none'">
-                <h3>${p.name}</h3>
-                <p style="color:#666;margin:0.5rem 0">${p.description}</p>
-                <p style="color:#888;font-size:0.85rem;margin:0.2rem 0">📁 ${p.category}</p>
-                <p class="price">${p.price} грн</p>
-                <p class="stock">Залишок: ${p.stock} шт</p>
-                <button class="btn ${inCart ? 'btn-in-cart' : 'btn-primary'}" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''}>
-                    ${p.stock === 0 ? 'Немає в наявності' : inCart ? '✓ В кошику' : 'Додати в кошик'}
-                </button>
-            </div>
+            <div class="product-card" data-test="product-card">
+    <img src="${p.imageUrl}" class="product-img" onerror="this.style.display='none'" data-test="product-image">
+    <h3 data-test="product-name">${p.name}</h3>
+    <p style="color:#666;margin:0.5rem 0" data-test="product-description">${p.description}</p>
+    <p style="color:#888;font-size:0.85rem;margin:0.2rem 0" data-test="product-category">📁 ${p.category}</p>
+    <p class="price" data-test="product-price">${p.price} грн</p>
+    <p class="stock" data-test="product-stock">Залишок: ${p.stock} шт</p>
+    <button class="btn ${inCart ? 'btn-in-cart' : 'btn-primary'}" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''} data-test="product-button">
+        ${p.stock === 0 ? 'Немає в наявності' : inCart ? '✓ В кошику' : 'Додати в кошик'}
+    </button>
+</div>
         `;
         }).join('');
     }
