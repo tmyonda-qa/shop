@@ -51,7 +51,7 @@
         <a id="cart-link" onclick="showPage('cart')" data-test="cart">🛒 Кошик</a>
         <a onclick="showPage('orders')" data-test="orders">Замовлення</a>
         <span id="auth-nav">
-                <a onclick="showPage('login')">Вхід</a>
+                <a onclick="showPage('login')" data-test="Login">Вхід</a>
                 <a onclick="showPage('register')" data-test="Registration">Реєстрація</a>
             </span>
         <span id="user-nav" style="display:none">
@@ -112,7 +112,7 @@
     </div>
     <div id="orders" class="page">
         <div id="admin-orders-section" style="display:none">
-            <h2 style="margin-bottom:1rem">Всі замовлення клієнтів <span id="admin-orders-count" style="background:#2c3e50;color:white;border-radius:12px;padding:0.1rem 0.5rem;font-size:0.9rem;min-width:20px;display:inline-block;text-align:center"></span></h2>
+            <h2 style="margin-bottom:1rem" data-test="all-users-orders">Всі замовлення клієнтів <span id="admin-orders-count" style="background:#2c3e50;color:white;border-radius:12px;padding:0.1rem 0.5rem;font-size:0.9rem;min-width:20px;display:inline-block;text-align:center"></span></h2>
             <div id="admin-orders-list"></div>
             <hr style="margin:2rem 0">
         </div>
@@ -141,9 +141,13 @@
     const API = 'http://localhost:5088/api';
     function getToken() { return localStorage.getItem('token'); }
     function getUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
+    
     function showMessage(text, type = 'success') {
         const el = document.getElementById('message');
-        el.innerHTML = `<div class="message ${type}" data-test="message-${type}">${text}</div>`;
+        el.innerHTML = `<div class="message ${type}" data-test="message-${type}" style="display:flex;justify-content:space-between;align-items:center">
+        <span>${text}</span>
+        <span onclick="this.parentElement.remove()" style="cursor:pointer;font-size:1.2rem;margin-left:1rem">✕</span>
+    </div>`;
         setTimeout(() => el.innerHTML = '', 3000);
     }
     function showPage(name) {
@@ -489,8 +493,8 @@ ${o.status !== 'Скасовано' ? `<button class="btn btn-danger" style="mar
             ? '<p>Немає замовлень від клієнтів</p>'
             : clientOrders.map(o => `
         <div style="background:white;padding:1rem;border-radius:8px;margin-bottom:1rem">
-            <p><strong>Замовлення #${o.id}</strong> — <span style="color:#666">${o.userEmail}</span></p>
-            <p>Дата: ${new Date(o.createdAt).toLocaleDateString('uk-UA')}</p>
+            <p><strong>Замовлення #${o.id}</strong> — <span style="color:#666" data-test="user-${o.userEmail}">${o.userEmail}</span></p>
+            <p data-test="date-${o.userEmail}">Дата: ${new Date(o.createdAt).toLocaleDateString('uk-UA')}</p>
             <div style="margin:0.5rem 0;border-top:1px solid #eee;padding-top:0.5rem">
                 ${o.items.map(i => `<p style="color:#555;margin:0.2rem 0">• ${i.productName} × ${i.quantity} — ${i.price * i.quantity} грн</p>`).join('')}
             </div>

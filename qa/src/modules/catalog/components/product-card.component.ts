@@ -8,7 +8,7 @@ export class ProductCardComponent {
     private category = this.card.locator('[data-test="product-category"]');
     private price = this.card.locator('[data-test="product-price"]');
     private stock = this.card.locator('[data-test="product-stock"]');
-    private addToCartButton = this.card.locator('[data-test="product-button"]:not([disabled])');
+    private addToCartButton = this.card.locator('[data-test="product-button"]');
     private outOfStockButton = this.card.locator('[data-test="product-button"][disabled]');
 
     async checkName(text: string) {

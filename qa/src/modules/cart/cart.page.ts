@@ -8,7 +8,11 @@ export class CartPage {
     private checkoutButton = this.page.locator('button[onclick="checkout()"]');
     private successMessage = this.page.locator('[data-test="message-success"]');
     private errorMessage = this.page.locator('[data-test="message-error"]');
+    private closeMessageButton = this.page.locator('[data-test="message-success"]');
 
+    async closeSuccessMessage() {
+        await this.closeMessageButton.click();
+    }
     async goto() {
         await this.page.click('a[id="cart-link"]');
     }

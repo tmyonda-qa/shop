@@ -75,6 +75,7 @@ public class OrdersController : ControllerBase
             .Include(o => o.Items)
             .ThenInclude(i => i.Product)
             .Where(o => o.UserId == userId)
+            .OrderByDescending(o => o.CreatedAt)
             .Select(o => new OrderDto
             {
                 Id = o.Id,
@@ -102,6 +103,7 @@ public class OrdersController : ControllerBase
             .Include(o => o.Items)
             .ThenInclude(i => i.Product)
             .Include(o => o.User)
+            .OrderByDescending(o => o.CreatedAt)
             .Select(o => new AdminOrderDto
             {
                 Id = o.Id,
