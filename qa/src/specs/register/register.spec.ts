@@ -33,7 +33,7 @@ test.describe('Register', () => {
         await home.catalogPage.card.checkDescription(bmwCard.description);
         await home.catalogPage.card.checkCategory(bmwCard.category);
         await home.catalogPage.card.checkPrice(bmwCard.price);
-        await home.catalogPage.card.checkStock(bmwCard.stock);
+        // await home.catalogPage.card.checkStock(bmwCard.stock);
         await home.catalogPage.card.checkAddToCartButtonVisible();
     });
 

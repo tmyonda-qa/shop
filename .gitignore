@@ -1,3 +1,10 @@
 **/bin/
 **/obj/
 .env
+# Playwright
+qa/playwright-report/
+qa/test-results/
+qa/node_modules/
+
+# Logs
+Shop.API/logs/
